@@ -1,0 +1,55 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <bean id="read"
+        class="com.salesforce.dataloader.process.ProcessRunner"
+        scope="prototype">
+        <description>accountInsert job gets the account record from the CSV file 
+            and inserts it into Salesforce.</description>
+        <property name="name" value="read"/>
+        <property name="configOverrideMap">
+            <map>
+                <entry key="dataAccess.readUTF8" value="false"/>
+                <entry key="dataAccess.writeUTF8" value="false"/>
+                <entry key="dataAccess.type" value="csvWrite"/>
+                <entry key="process.enableExtractStatusOutput" value="false"/>
+                <entry key="process.enableLastRunOutput" value="true"/>
+                <entry key="sfdc.connectionTimeoutSecs" value="60"/>
+                <entry key="sfdc.debugMessages" value="false"/>
+                <entry key="sfdc.enableRetries" value="true"/>
+                <entry key="sfdc.extractionRequestSize" value="500"/>
+                <entry key="sfdc.maxRetries" value="3"/>
+                <entry key="sfdc.minRetrySleepSecs" value="2"/>
+                <entry key="sfdc.noCompression" value="false"/>
+                <entry key="sfdc.resetUrlOnLogin" value="true"/>
+                <entry key="sfdc.timeoutSecs" value="600"/>
+                <entry key="sfdc.timezone" value="GMT"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="write"
+        class="com.salesforce.dataloader.process.ProcessRunner"
+        scope="prototype">
+        <description>accountInsert job gets the account record from the CSV file 
+            and inserts it into Salesforce.</description>
+        <property name="name" value="write"/>
+        <property name="configOverrideMap">
+            <map>
+                <entry key="dataAccess.readUTF8" value="false"/>
+                <entry key="dataAccess.writeUTF8" value="false"/>
+                <entry key="dataAccess.type" value="csvRead"/>
+                <entry key="process.enableLastRunOutput" value="true"/>
+                <entry key="sfdc.connectionTimeoutSecs" value="60"/>
+                <entry key="sfdc.debugMessages" value="false"/>
+                <entry key="sfdc.enableRetries" value="true"/>
+                <entry key="sfdc.maxRetries" value="3"/>
+                <entry key="sfdc.minRetrySleepSecs" value="2"/>
+                <entry key="sfdc.noCompression" value="false"/>
+                <entry key="sfdc.resetUrlOnLogin" value="true"/>
+                <entry key="sfdc.timeoutSecs" value="600"/>
+                <entry key="sfdc.timezone" value="GMT"/>
+                <entry key="sfdc.truncateFields" value="false"/>
+                <entry key="sfdc.useBulkApi" value="false"/>
+            </map>
+        </property>
+    </bean>
+</beans>
