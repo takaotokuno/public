@@ -1,0 +1,55 @@
+【概要】
+本バッチはデータローダをバッチモードで起動するバッチです。
+Salesforceに公式で紹介されている方法は「process-conf.xml」ファイルに全ての設定を記載する性質上、
+・絶対パスを記入する必要性がある
+・複雑なSOQL文を記載する場合、文字列が横に横に伸びていく
+といった理由からあまりメンテナンス性がよくありません。
+本バッチは「ini」ファイル等に変更頻度の高い設定を移し、利便性を高めております。
+
+※本バッチを使用したことでどのような不具合が発生した場合でも、開発者は一切の責任を持ちません。
+自己責任の上で、Sandbox環境等で十分な動作確認をした上でお使いください。
+
+【使い方】
+①　環境変数「JAVA_HOME」が設定されているか確認してください。
+②　「preference.ini」に、データローダの格納ディレクトリパス、ディレクトリ内の「.jar」ファイル名、プロキシサーバの情報（あれば）を記入してください。
+③　公式の「データローダーをバッチモードで使用する際の設定手順」から、「dataloader.key」ファイルと、暗号化されたパスワードを取得してください。
+④　③で取得した「dataloader.key」ファイルで本バッチ内の「dataloader.key」ファイルを置き換えてください。
+⑤　「config-sample.ini」ファイル（名称変更可）にログイン情報を設定してください。
+⑥　「Boot.bat」の「set CONF_FILE=」に⑤で設定したファイルの名称を記入してください。
+⑦　「Boot.bat」を起動すると、データローダがバッチモードで起動します。
+
+※「Boot.bat」と「config-sample.ini」を別名でコピーして、「.bat」ファイルの「set CONF_FILE=」により「.ini」ファイルを紐づければ
+　「.bat」ファイル毎に様々な設定でデータローダを起動できます。
+※SOQL文は「soql」ディレクトリ内に格納し、「.ini」ファイルの「SOQL_FILE=」にファイル名をご記入ください。
+※Extractではなく、Insert、Update、Upsert、Deleteでデータローダを起動したい場合、「config-sample-upsert.ini」ファイルをご参照ください。
+
+【ディレクトリ構造】
+POWERSHELL_CALL_DATALOADER
+│  Boot.bat //PowerShellを起動する他、ログファイルの削除・格納を行う
+│
+├─Data
+│  │  main.ps1 //DataLoaderを起動するPowerShell本体
+│  │
+│  ├─conf
+│  │  │  config-sample.ini //DataLoaderのよく変更される設定（オブジェクト、ログイン情報、項目マッピングファイル名等）を記載する
+│  │  │  preference.ini //使用者の環境における設定（DataLoaderの格納場所、プロキシサーバ情報等）を記載する
+│  │  │  dataloader.key //DataLoaderをバッチモードから起動する場合に暗号化キー復元に必要となるファイル
+│  │  │                 //ただし初期状態で格納してあるファイルはダミーファイルのため、使用者が置き換える必要有
+│  │  │  process-conf.xml //DataLoaderのあまり変更されない設定を記載する
+│  │  │
+│  │  ├─map //項目マッピングファイル（sdl）を格納する
+│  │  │
+│  │  └─soql //SOQL文を記載したファイル（txt）を格納する
+│  │
+│  ├─log //直近で実行したDataLoaderのログファイルが格納される
+│  │  │  dataloader.log //DataLoaderの実行ログ
+│  │  │  *_lastRun.properties //DataLoaderの最終実行時間
+│  │  │  setting.log //DataLoaderに入力された設定（引数）一覧
+│  │  │
+│  │  └─old //過去に実行したログファイルが格納される
+│  │  
+│  └─status //DML操作時の成功結果とエラーのCSVファイルが格納される
+│
+├─In //DML操作（Insert,Update,Upsert,Delete）時にSalesforceへ入力するCSVファイルを格納する
+│
+└─Out //Select操作時にSalesforceから出力されたCSVファイルを格納する
