@@ -1,18 +1,20 @@
+$currentDateTime = Get-Date -Format "yyyyMMddHHmmss"
+
 # Get Current Folder Path
 $DATA_DIR = @(Split-Path $script:myInvocation.MyCommand.Path -Parent).Trim()
 $ROOT_DIR = Split-Path -Path $DATA_DIR
 
 # Directory/File Path Setting
 $CONF_DIR = $DATA_DIR + "\conf"
-if($Arg){
-    $CONF_FILE = $CONF_DIR + "\" + $Arg[0]
+if($Args){
+    $CONF_FILE = $CONF_DIR + "\" + $Args[0]
 }else{
     $CONF_FILE = $CONF_DIR + "\config-sample.ini"
 }
 $PREF_FILE = $CONF_DIR + "\preference.ini"
 $LOG_DIR = $DATA_DIR + "\log"
-$LOG_FILE = $LOG_DIR + "\dataloader.log"
-$SETTING_FILE = $LOG_DIR + "\setting.log"
+$LOG_FILE = $LOG_DIR + "\dataloader" + $currentDateTime + ".log"
+$SETTING_FILE = $LOG_DIR + "\setting" + $currentDateTime + ".log"
 $STATUS_DIR = $DATA_DIR + "\status"
 $OUTPUT_DIR = $ROOT_DIR + "\Out"
 $INPUT_DIR = $ROOT_DIR + "\In"
@@ -28,8 +30,6 @@ $PREF_PARAMATER = @{}
 $JAR_FILE = $PREF_PARAMATER.DL_PATH + "\" + $PREF_PARAMATER.JAR_FILE
 $JAVA_EXE = $env:JAVA_HOME + "\bin\java.exe"
 
-$currentDateTime = Get-Date -Format "yyyyMMddHHmmss"
-
 # Set Value of Common Arguments
 $argumentList = @(
     "-cp",
@@ -41,10 +41,12 @@ $argumentList = @(
     ("process.encryptionKeyFile=" + $CONF_DIR + "\dataLoader.key"),
     ("process.lastRunOutputDirectory=" + $LOG_DIR),
     ("sfdc.debugMessagesFile=" + $LOG_DIR),
+    ("dataAccess.readUTF8=" + $CONF_PARAMATER.IS_UTF8),
+    ("dataAccess.writeUTF8=" + $CONF_PARAMATER.IS_UTF8),
     ("sfdc.endpoint=" + $CONF_PARAMATER.LOGIN_URL),
     ("sfdc.entity=" + $CONF_PARAMATER.OBJECT),
     ("sfdc.password=" + $CONF_PARAMATER.PASSWORD),
-    ("sfdc.proxyHost=" + $PREF_PARAMATER.PROXY_USERNAME),
+    ("sfdc.proxyHost=" + $PREF_PARAMATER.PROXY_HOST),
     ("sfdc.proxyPassword=" + $PREF_PARAMATER.PROXY_PASSWORD),
     ("sfdc.proxyPort=" + $PREF_PARAMATER.PROXY_PORT),
     ("sfdc.proxyUsername=" + $PREF_PARAMATER.PROXY_USERNAME),
