@@ -8,8 +8,6 @@
         <property name="name" value="read"/>
         <property name="configOverrideMap">
             <map>
-                <entry key="dataAccess.readUTF8" value="false"/>
-                <entry key="dataAccess.writeUTF8" value="false"/>
                 <entry key="dataAccess.type" value="csvWrite"/>
                 <entry key="process.enableExtractStatusOutput" value="false"/>
                 <entry key="process.enableLastRunOutput" value="true"/>
@@ -34,8 +32,6 @@
         <property name="name" value="write"/>
         <property name="configOverrideMap">
             <map>
-                <entry key="dataAccess.readUTF8" value="false"/>
-                <entry key="dataAccess.writeUTF8" value="false"/>
                 <entry key="dataAccess.type" value="csvRead"/>
                 <entry key="process.enableLastRunOutput" value="true"/>
                 <entry key="sfdc.connectionTimeoutSecs" value="60"/>
