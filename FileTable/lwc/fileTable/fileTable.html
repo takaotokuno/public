@@ -1,0 +1,14 @@
+<template>
+    <lightning-card title={title} icon-name="standard:file">
+        <div class="slds-card__body slds-card__body_inner">
+            <lightning-datatable
+                    class="custom"
+                    key-field="id"
+                    data={table}
+                    columns={columns}
+                    show-row-number-column
+                    hide-checkbox-column>
+            </lightning-datatable>
+        </div>
+    </lightning-card>
+</template>
